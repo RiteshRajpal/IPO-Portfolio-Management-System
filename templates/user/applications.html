@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}My Applications{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <span class="navbar-brand">
+            <i class="fas fa-file-alt me-2"></i>
+            My Applications
+        </span>
+        <div>
+            <a href="{{ url_for('user_home') }}" class="btn btn-outline-primary btn-sm me-2">
+                <i class="fas fa-home me-1"></i>Home
+            </a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger-custom btn-sm">
+                <i class="fas fa-sign-out-alt me-1"></i>Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card-custom p-4">
+        <h4 class="mb-4">
+            <i class="fas fa-list me-2"></i>
+            Application History
+        </h4>
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Applied Shares</th>
+                        <th>Allotted Shares</th>
+                        <th>Status</th>
+                        <th>Applied Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td class="fw-bold">{{ app[0] }}</td>
+                        <td>{{ app[1] }}</td>
+                        <td>{{ app[4] if app[4] > 0 else '-' }}</td>
+                        <td>
+                            {% if app[2] == 'APPROVED' %}
+                                <span class="badge badge-custom bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Approved
+                                </span>
+                            {% elif app[2] == 'REJECTED' %}
+                                <span class="badge badge-custom bg-danger">
+                                    <i class="fas fa-times-circle me-1"></i>Rejected
+                                </span>
+                            {% else %}
+                                <span class="badge badge-custom bg-warning">
+                                    <i class="fas fa-clock me-1"></i>Pending
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>{{ app[3].strftime('%d %b %Y') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                            No applications yet
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

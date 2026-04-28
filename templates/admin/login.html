@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">
+            <i class="fas fa-user-shield me-2"></i>
+            Admin Portal
+        </h2>
+
+        <form method="POST">
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Username</label>
+                <input type="text" name="username" class="form-control form-control-custom" placeholder="Enter admin username" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Password</label>
+                <div class="password-container">
+                    <input type="password" name="password" class="form-control form-control-custom" placeholder="Enter admin password" required>
+                    <button type="button" class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-custom btn-primary-custom w-100 mb-3">
+                <i class="fas fa-sign-in-alt me-2"></i>Admin Login
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p class="text-muted">
+                <a href="{{ url_for('login') }}" class="text-decoration-none" style="color: var(--primary);">
+                    <i class="fas fa-arrow-left me-1"></i>Back to User Login
+                </a>
+            </p>
+        </div>
+
+        <!-- Test Login Section -->
+        <div class="test-login-section">
+            <p class="text-center text-muted mb-2" style="font-size: 0.85rem;">
+                <i class="fas fa-flask me-1"></i>Quick Test Login
+            </p>
+            <button type="button" class="test-login-btn" data-username="admin" data-password="Admin@123456">
+                <i class="fas fa-user-shield me-2"></i>Admin Account
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

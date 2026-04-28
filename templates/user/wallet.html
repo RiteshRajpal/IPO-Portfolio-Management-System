@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Wallet{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-custom">
+    <div class="container-fluid">
+        <span class="navbar-brand">
+            <i class="fas fa-wallet me-2"></i>
+            My Wallet
+        </span>
+        <div>
+            <a href="{{ url_for('user_home') }}" class="btn btn-outline-primary btn-sm me-2">
+                <i class="fas fa-home me-1"></i>Home
+            </a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger-custom btn-sm">
+                <i class="fas fa-sign-out-alt me-1"></i>Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Balance Card -->
+        <div class="col-md-6 mb-4">
+            <div class="wallet-card">
+                <h4 class="mb-2">
+                    <i class="fas fa-wallet me-2"></i>
+                    Current Balance
+                </h4>
+                <div class="wallet-balance">₹ {{ "%.2f"|format(balance) }}</div>
+            </div>
+        </div>
+
+        <!-- Recharge Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card-custom p-4">
+                <h4 class="mb-4">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Add Money
+                </h4>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Enter Amount</label>
+                        <input type="number" name="amount" class="form-control form-control-custom" 
+                               placeholder="Enter amount" required min="1" max="1000000" step="0.01">
+                        <small class="text-muted">Min: ₹1 | Max: ₹10,00,000 per transaction</small>
+                    </div>
+                    <button type="submit" class="btn btn-custom btn-success-custom w-100">
+                        <i class="fas fa-check-circle me-2"></i>Add to Wallet
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="card-custom p-4 mt-4">
+        <h4 class="mb-4">
+            <i class="fas fa-history me-2"></i>
+            Transaction History
+        </h4>
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for txn in transactions %}
+                    <tr>
+                        <td>
+                            <i class="fas fa-{% if txn[0] == 'Recharge' %}arrow-down text-success{% else %}arrow-up text-danger{% endif %} me-2"></i>
+                            {{ txn[0] }}
+                        </td>
+                        <td class="fw-bold {% if txn[0] == 'Recharge' %}text-success{% else %}text-danger{% endif %}">
+                            {% if txn[0] == 'Recharge' %}+{% else %}-{% endif %}₹{{ "{:,.2f}".format(txn[1]) }}
+                        </td>
+                        <td>{{ txn[2].strftime('%d %b %Y, %I:%M %p') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">No transactions yet</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
